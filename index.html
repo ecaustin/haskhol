@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>HaskHOL by ecaustin</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>HaskHOL</h1>
+        <p>The Main HaskHOL project page</p>
+
+        <p class="view"><a href="https://github.com/ecaustin/haskhol">View the Project on GitHub <small>ecaustin/haskhol</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/ecaustin/haskhol/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/ecaustin/haskhol/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/ecaustin/haskhol">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="news" class="anchor" href="#news" aria-hidden="true"><span class="octicon octicon-link"></span></a>News</h1>
+
+<p>01/01/2015 - Began transitioning HaskHOL's project page to GitHub to prepare for my departure/graduation from KU.</p>
+
+<h1>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span class="octicon octicon-link"></span></a>Description</h1>
+
+<p>HaskHOL is a Haskell hosted domain specific language for Higher-Order Logic (HOL) theorem proving.
+The goal of HaskHOL is to provide a lightweight, general purpose theorem proving library for direct use by other Haskell programs and libraries.</p>
+
+<p>HaskHOL, like every other member of the HOL proof system family, follows the LCF implementation style -- it starts with a sound and simple logical kernel from which more advanced features are bootstrapped.
+The primitive logic of HaskHOL is inspired heavily by Freek Wiedijk's <a href="http://www.cs.ru.nl/%7Efreek/notes/hol_light-stateless.tar.gz">Stateless HOL</a> and Norbert Voelker's <a href="http://dces.essex.ac.uk/staff/norbert/hol2p/">HOL2P</a>; both of which are extensions of John Harrison's <a href="http://www.cl.cam.ac.uk/%7Ejrh13/hol-light/">HOL Light</a>.</p>
+
+<p>At the lowest level, HaskHOL's logical kernel is a "psuedo-stateless" implementation of a HOL logic that supports limited second-order polymorphism.  This logic is essentially a confluence of Wiedijk and Voelker's logics, with a subtle modification to the stateless approach to embed hashes for comparison, rather than definitional values.  This allows HaskHOL to efficiently represent and operate over its primitive data types, even in the presence of non-lazy traversals.  As a brief aside, the current reliance on hashes is potentially unsound, however, that should be fixed by moving to static keys as provided by the static pointers implementation coming soon to GHC.</p>
+
+<p>The stateful features of the HaskHOL system are built on top of this kernel by simulating the desired side effects via a computational monad.  We find this segregation to be beneficial, as the implementation of the side effects does not need to worry about maintaining the soundness of the system, provided that the interface exposed by the kernel is respected.
+The <a href="https://github.com/ecaustin/haskhol-core">haskhol-core</a> package provides the kernel, stateful layer, and other basic functionality (parser, pretty-printer, etc.) of HaskHOL.
+Additional packages providing more advanced libraries are in an experimental, semi-stable state, but should be made publicly available soon.</p>
+
+<p>The current focus of the HaskHOL project is developing a linkage with GHC at the compiler plugin level for the purpose of verifying Haskell code natively at compile time.</p>
+
+<h1>
+<a id="status" class="anchor" href="#status" aria-hidden="true"><span class="octicon octicon-link"></span></a>Status</h1>
+
+<p>The Core HaskHOL system is now publicly available on Hackage.
+Provided you have an up to date Haskell and Cabal installation, installing HaskHOL-Core should be as easy as running the command: <code>cabal install haskhol-core</code></p>
+
+<p>Additional libraries are available by request.
+They will be released publicly, pending a code review and documentation.</p>
+
+<p>A basic tutorial is in the works, but its availability is currently unknown.
+In the mean time, we encourage you to consult the documentation of the previously mentioned systems, and Gordon and Melham's <em>Introduction to HOL</em>, to answer any HOL questions you may have.</p>
+
+<h1>
+<a id="papers" class="anchor" href="#papers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Papers</h1>
+
+<p>The best description of the primitive logic behind HaskHOL is contained within our submission to ITP2013, Stateless Higher-Order Logic with Quantified Types: <a href="http://people.eecs.ku.edu/%7Eeaustin/papers/haskhol_itp2013.pdf">HaskHOL ITP 2013</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/ecaustin">ecaustin</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
