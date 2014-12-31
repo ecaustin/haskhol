@@ -45,7 +45,7 @@ The primitive logic of HaskHOL is inspired heavily by Freek Wiedijk's <a href="h
 <p>At the lowest level, HaskHOL's logical kernel is a "psuedo-stateless" implementation of a HOL logic that supports limited second-order polymorphism.  This logic is essentially a confluence of Wiedijk and Voelker's logics, with a subtle modification to the stateless approach to embed hashes for comparison, rather than definitional values.  This allows HaskHOL to efficiently represent and operate over its primitive data types, even in the presence of non-lazy traversals.  As a brief aside, the current reliance on hashes is potentially unsound, however, that should be fixed by moving to static keys as provided by the static pointers implementation coming soon to GHC.</p>
 
 <p>The stateful features of the HaskHOL system are built on top of this kernel by simulating the desired side effects via a computational monad.  We find this segregation to be beneficial, as the implementation of the side effects does not need to worry about maintaining the soundness of the system, provided that the interface exposed by the kernel is respected.
-The <a href="../haskhol-core">haskhol-core</a> package provides the kernel, stateful layer, and other basic functionality (parser, pretty-printer, etc.) of HaskHOL.
+The <a href="https://github.com/ecaustin/haskhol-core">haskhol-core</a> package provides the kernel, stateful layer, and other basic functionality (parser, pretty-printer, etc.) of HaskHOL.
 Additional packages providing more advanced libraries are in an experimental, semi-stable state, but should be made publicly available soon.</p>
 
 <p>The current focus of the HaskHOL project is developing a linkage with GHC at the compiler plugin level for the purpose of verifying Haskell code natively at compile time.</p>
@@ -67,14 +67,14 @@ In the mean time, we encourage you to consult the documentation of the previousl
 
 <ul>
 <li>
-<p>Austin, E., and P. Alexander, <a href="/papers/haskhol-tfp10.pdf">HaskHOL: A Haskell Hosted Domain Specific Language Representation of HOL Light</a>, Trends in Functional Programming (TFP’10), Norman, OK, May 17-19, 2010.</p>
+<p>Austin, E., and P. Alexander, <a href="/haskhol/papers/haskhol-tfp10.pdf">HaskHOL: A Haskell Hosted Domain Specific Language Representation of HOL Light</a>, Trends in Functional Programming (TFP’10), Norman, OK, May 17-19, 2010.</p>
 
 <p>This draft publication details the very earliest implementation of HaskHOL -- a naive translation of HOL Light's logical kernel into a functionally-equivalent Haskell version.  The crux of the work was identifying both the requisite OCaml side-effects and a monad transformer stack that could simulate them.  This version failed miserably for a number of reasons, but it framed the basic design of HaskHOL that's still used today.  There's also a brief mention of using QuickCheck to verify the prover kernel by testing with generators for well-formed proof terms, but that work has sadly gone neglected in the last few years.</p>
 </li>
 <li>
-<p>Austin, E., and P. Alexander, <a href="/papers/haskhol-ifl11.pdf">Haskell + HOL = HaskHOL</a>, 2011 Symposium on Implementation and Application of Functional Langauges (IFL'11), Lawrence, KS, 2011.</p>
+<p>Austin, E., <a href="/haskhol/papers/austin-thesis.pdf">HaskHOL: A Haskell Hosted Domain Specific Language for Higher-Order Logic Theorem Proving</a>, Masters Thesis, University of Kansas, 2011.</p>
 
-<p>This draft publication details the first revision of the implementation of HaskHOL.  The major changes included:</p>
+<p>My Masters Thesis detailed the first major revision of the implementation of HaskHOL.  The major changes included:</p>
 
 <ul>
 <li>A mechanism for extensible state to support libraries introducing new fields to the working theory.</li>
@@ -82,18 +82,41 @@ In the mean time, we encourage you to consult the documentation of the previousl
 <li>A foundation for implementing HaskHOL libraries that modified the current working theory.</li>
 </ul>
 
-<p>This paper is also noteworthy for including the first performance metrics for HaskHOL.  Summarized:  HaskHOL worked, but it was incredibly slow.  There were known space leak issues and most non-trivial proofs expanded out to computations where sub-proofs were used, and thus recomputed, repeatedly.  Still.  It worked, which was pretty exciting at the time.</p>
+<p>It also notably included the first performance metrics for HaskHOL.  Summarized:  HaskHOL worked, but it was incredibly slow.  There were known space leak issues and most non-trivial proofs expanded out to computations where sub-proofs were used, and thus recomputed, repeatedly.  Still.  It worked, which was pretty exciting at the time.</p>
 </li>
 <li>
-<p>Austin, E., and P. Alexander, <a href="/papers/haskell+hol=haskhol-updated.pdf">Haskell + HOL = HaskHOL</a>, Unpublished, 2012.</p>
+<p>Austin, E., and P. Alexander, <a href="/haskhol/papers/haskhol-ifl11.pdf">Haskell + HOL = HaskHOL</a>, 2011 Symposium on Implementation and Application of Functional Langauges (IFL'11), Lawrence, KS, 2011.</p>
 
-<p>This unpublished paper is an updated draft of the previous publication.  The glaring issues with HaskHOL at the time, namely the space leaks, were fixed and the performance evaluation was rerun; this time with an apples-to-oranges comparison with HOL Light.  In short, flattening the monad stack, switching to a more time efficient data structure for extensible state, and making some basic algorithmic adjustments guided by profiling lead to a pretty extreme increase in performance.</p>
+<p>This is essentially a boiled down summary of my Masters Thesis, focusing on the implementation aspects of HaskHOL and its run-time performance numbers.</p>
+</li>
+<li>
+<p>Austin, E., and P. Alexander, <a href="/haskhol/papers/chasing_efficient_proof.pdf">Chasing Sound, Efficient Proof with a Monadic, HOL System</a>, Unpublished, 2012.</p>
 
-<p>This paper was also the first time that I touched upon the potential soundness (incorrectly referred to as safety in this draft) issues that come with using the MTL.</p>
+<p>This unpublished paper extended the IFL2011 publication to include the first attempt to optimize HaskHOL.  Compile-time meta-programming was used to move as much proof effort from run-time to compile-time as possible.  Following from the same basic idea as quasi-quoting proof terms, we wanted to "quasi-quote" proofs themselves -- lifting constant theorems into the source code as values at compile-time.  In order to guarantee that these theorems were only reused in sound contexts, Haskell's advanced type features to record what theory checkpoints a computation or operation depended on.</p>
+
+<p>The performance evaluation was repeated, this time with an apples-to-oranges comparison with HOL Light.  As was to be expected, run-time was greatly improved and was now comparable to HOL Light, at least for the selected test cases.</p>
+</li>
+<li>
+<p>Austin, E., and P. Alexander, <a href="/haskhol/papers/protect_and_serve.pdf">Protect and Serve:  Policing Your Monadic Computations</a>, Unpublished, 2013.</p>
+
+<p>This unpublished pearl attempts to boil down HaskHOL's compile-time proof mechanism to a more general technique.  The <code>Protected</code> type class presented in this paper is the basis for protecting the soundness of HaskHOL values prepared via <code>runQ</code> at compile-time or <code>unsafePerformIO</code> at run-time.</p>
+</li>
+<li>
+<p>Austin, E. and P. Alexander, <a href="/papers/haskhol/haskhol_itp2013.pdf">Stateless Higher-Order Logic with Quantified Types</a>, International Conference on Interactive Theorem Proving (ITP’13), LNCS 7998, Rennes, France, July 2013.</p>
+
+<p>This pearl describes the foundational logic of HaskHOL, focusing on the issues behind unifying stateless and polymorphic HOL logics.  Though slightly out of date at this point in time, it is still currently the best reference for understanding HaskHOL's primitive data types.</p>
+</li>
+<li>
+<p>Austin, E. and P. Alexander, <a href="/papers/haskhol/monadic_lcf.pdf">A Monadic Approach to the LCF-Style</a>, Unpublished, 2014.</p>
+
+<p>This unpublished paper was an attempt to document the current iteration of HaskHOL's implementation.  Again, though slightly out of date, it represents a decent reference for understanding HaskHOL.  The plan is to update it, yet again, to reflect the state of HaskHOL after my dissertation is defended.</p>
+</li>
+<li>
+<p>Austin, E. and P. Alexander, <a href="/papers/haskhol/comp_directed_verif.pdf">Compiler Directed Verification of Haskell Programs</a>, Unpublished, 2014.</p>
+
+<p>This unpublished pearl documents the high-level design behind the HaskHOL and Haskell linkage.  It is in the process of being expanded to a full length paper for submission after my dissertation is defended. </p>
 </li>
 </ul>
-
-<p>The best description of the primitive logic behind HaskHOL is contained within our submission to ITP2013, Stateless Higher-Order Logic with Quantified Types: <a href="http://people.eecs.ku.edu/%7Eeaustin/papers/haskhol_itp2013.pdf">HaskHOL ITP 2013</a></p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/ecaustin">ecaustin</a></p>
