@@ -68,16 +68,16 @@ In the mean time, we encourage you to consult the documentation of the previousl
     This unpublished pearl attempts to boil down HaskHOL's compile-time proof mechanism to a more general technique.  The `Protected` type class presented in this paper is the basis for protecting the soundness of HaskHOL values prepared via `runQ` at compile-time or `unsafePerformIO` at run-time.
 
 
-* Austin, E. and P. Alexander, [Stateless Higher-Order Logic with Quantified Types](/papers/haskhol/haskhol_itp2013.pdf), International Conference on Interactive Theorem Proving (ITP’13), LNCS 7998, Rennes, France, July 2013.
+* Austin, E. and P. Alexander, [Stateless Higher-Order Logic with Quantified Types](/haskhol/papers/haskhol_itp2013.pdf), International Conference on Interactive Theorem Proving (ITP’13), LNCS 7998, Rennes, France, July 2013.
 
     This pearl describes the foundational logic of HaskHOL, focusing on the issues behind unifying stateless and polymorphic HOL logics.  Though slightly out of date at this point in time, it is still currently the best reference for understanding HaskHOL's primitive data types.
 
 
-* Austin, E. and P. Alexander, [A Monadic Approach to the LCF-Style](/papers/haskhol/monadic_lcf.pdf), Unpublished, 2014.
+* Austin, E. and P. Alexander, [A Monadic Approach to the LCF-Style](/haskhol/papers/monadic_lcf.pdf), Unpublished, 2014.
 
     This unpublished paper was an attempt to document the current iteration of HaskHOL's implementation.  Again, though slightly out of date, it represents a decent reference for understanding HaskHOL.  The plan is to update it, yet again, to reflect the state of HaskHOL after my dissertation is defended.
 
 
-* Austin, E. and P. Alexander, [Compiler Directed Verification of Haskell Programs](/papers/haskhol/comp_directed_verif.pdf), Unpublished, 2014.
+* Austin, E. and P. Alexander, [Compiler Directed Verification of Haskell Programs](/haskhol/papers/comp_directed_verif.pdf), Unpublished, 2014.
 
     This unpublished pearl documents the high-level design behind the HaskHOL and Haskell linkage.  It is in the process of being expanded to a full length paper for submission after my dissertation is defended. 
